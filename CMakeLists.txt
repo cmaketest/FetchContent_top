@@ -1,8 +1,24 @@
 cmake_minimum_required(VERSION 3.11)
 
-project (FetchContent_lib_a)
+project (FetchContent_top)
 
 include(FetchContent)
+
+FetchContent_Declare(FetchContent_liba
+    GIT_REPOSITORY https://github.com/cmaketest/FetchContent_liba.git
+)
+
+FetchContent_GetProperties(FetchContent_liba)
+string(TOLOWER "FetchContent_liba" lc_liba_Name)
+if(NOT ${lc_liba_Name}_POPULATED)
+  FetchContent_Populate(FetchContent_liba)
+  message(STATUS "FetchContent_liba source dir: ${${lc_liba_Name}_SOURCE_DIR}")
+  message(STATUS "FetchContent_liba binary dir: ${${lc_liba_Name}_BINARY_DIR}")
+  add_subdirectory(${${lc_liba_Name}_SOURCE_DIR} ${${lc_liba_Name}_BINARY_DIR})
+endif()
+
+include_directories(${${lc_liba_Name}_SOURCE_DIR})
+
 
 FetchContent_Declare(FetchContent_libb
     GIT_REPOSITORY https://github.com/cmaketest/FetchContent_libb.git
@@ -19,7 +35,6 @@ endif()
 
 include_directories(${${lc_libb_Name}_SOURCE_DIR})
 
-add_library(fc_lib_a STATIC fc_lib_a.c)
 
-add_executable(test test.c)
-target_link_libraries(test fc_lib_a fc_lib_b)
+add_executable(top main.c)
+target_link_libraries(top fc_lib_a fc_lib_b)
