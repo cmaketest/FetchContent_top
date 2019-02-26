@@ -2,8 +2,8 @@ FetchContent_top
 
 This repo demonstrates cmake's FetchContent feature.
 
-There are 3 libraries in play here:
-* top - depends upon liba and libb
+There are 3 repos in play here:
+* top - (executable) depends upon liba and libb
 * liba - depends upon libb
 * libb - no dependencies
 
